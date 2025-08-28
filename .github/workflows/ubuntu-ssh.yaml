@@ -17,8 +17,9 @@ jobs:
 
       - name: Keep the terminal idle
         run: | 
+          echo "Username is: $(whoami)"
           while [[ ! -f ~/stop ]]; do
             echo "Waiting for file to be created..."
-            sleep 5
+            sleep 10
           done
           
