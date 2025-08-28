@@ -1,0 +1,24 @@
+on: workflow_dispatch
+
+jobs:
+  build: 
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      
+      - name: Update and setup tailscale
+        run: |
+          sudo apt update
+          curl -fsSL https://tailscale.com/install.sh | sh
+          sudo tailscale up --auth-key=${{ secrets.TS_AUTH_KEY }}
+          sudo tailscale set --ssh --hostname github-action
+
+      - name: Keep the terminal idle
+        run: | 
+          while [[ ! -f ~/stop ]]; do
+            echo "Waiting for file to be created..."
+            sleep 5
+          done
+          
